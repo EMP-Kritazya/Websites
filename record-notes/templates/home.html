@@ -1,0 +1,41 @@
+{% extends "base.html" %} {% block title %} HOME {% endblock %} {% block csslink
+%}
+<link rel="stylesheet" href="{{url_for('static', filename = 'home.css')}}" />
+{% endblock %} {% with messages = get_flashed_messages() %} {% if messages %} {%
+for msg in messages %}
+<p class="flash">{{msg}}</p>
+{% endfor %} {% endif %} {% endwith %} {% block contents %}
+
+<header>
+  <nav>
+    <div class="box"></div>
+    <div class="logo">
+      <h1>recordIT</h1>
+    </div>
+    <ul class="nav-ul">
+      <li class="nav-tool">
+        <a href="" class="nav-link">Home</a>
+      </li>
+      <li class="nav-tool">
+        <a href="" class="nav-link">Record</a>
+      </li>
+      <li class="nav-tool-end">
+        <a href="/logout" class="nav-link">Logout</a>
+      </li>
+    </ul>
+  </nav>
+</header>
+
+<main>
+  <div class="welcome-text">
+    <!-- <h1 class="first">Welcome to RecordIT</h1>
+    <h1 class="second">Here you record and we save it!</h1>
+    <h1 class="third">
+      Login again and retrieve <span style="font-weight: bold">ANYTIME</span>...
+    </h1> -->
+    <h1 class="typewriter-text"></h1>
+  </div>
+</main>
+
+<script src="{{url_for('static', filename = 'homescript.js')}}" defer></script>
+{% endblock %}

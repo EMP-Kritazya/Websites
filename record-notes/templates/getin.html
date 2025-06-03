@@ -1,0 +1,17 @@
+{% extends "base.html" %} {% block title %} RecordIT {% endblock %} {% block
+csslink %}
+<link rel="stylesheet" href="{{url_for('static', filename = 'getin.css')}}" />
+{% endblock %} {% block contents %} {% with messages = get_flashed_messages() %}
+{% if messages %} {% for msg in messages %}
+<p class="flash">{{msg}}</p>
+{% endfor %} {% endif %} {% endwith %}
+
+<main>
+  <h1 class="get-in-title">RecordIT</h1>
+  <div class="get-in-btn">
+    <a href="/login" class="btn">Login</a>
+    <a href="/signup" class="btn">SignUp</a>
+  </div>
+</main>
+
+{% endblock %}

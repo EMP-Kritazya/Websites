@@ -1,0 +1,114 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+
+* {
+  padding: 0px;
+  margin: 0px;
+  box-sizing: border-box;
+}
+
+body {
+  background-image: linear-gradient(to bottom, black, rgb(43, 0, 43));
+  font-family: "Poppins", "sans-serif";
+  color: white;
+}
+
+main {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  justify-content: center;
+  align-items: center;
+}
+
+form {
+  width: 70%;
+}
+
+fieldset {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  height: 70vh;
+  padding: 2rem;
+}
+
+.signup-title {
+  margin: 2rem;
+  font-size: 4rem;
+}
+
+label {
+  display: block;
+  margin: 1rem;
+  font-size: 2rem;
+  width: 50%;
+}
+
+.field {
+  width: 50%;
+  height: 3rem;
+  display: block;
+  margin-bottom: 3rem;
+  border: 2px solid rgb(0, 251, 255);
+  border-radius: 10px;
+  color: green;
+  padding: 5px 10px;
+  font-family: "Poppins", "sans-serif";
+  font-size: 1rem;
+}
+
+.submit {
+  background-color: black;
+  border: 2px solid white;
+  padding: 0.5rem 2rem;
+  border-radius: 40px;
+  margin-top: 2rem;
+  font-family: "Poppins", "sans-serif";
+  font-size: 1.5rem;
+  color: white;
+  transition: transform 0.5s ease-in-out, background-color 0.5s ease-in-out,
+    color 0.5s ease-in-out;
+}
+
+.submit:hover {
+  cursor: pointer;
+  transform: scale(1.05);
+  background-color: rgb(0, 220, 254);
+  color: black;
+}
+
+.flash {
+  position: absolute;
+  top: 10%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 1.2rem;
+  background-color: rgb(76, 204, 76);
+  padding: 1.5rem;
+  border-radius: 5px;
+  font-weight: 900;
+  font-size: 1.4rem;
+  animation: translate 5s ease-in-out forwards;
+}
+
+@keyframes translate {
+  0% {
+    top: 0%;
+  }
+  50% {
+    top: 10%;
+  }
+  70% {
+    top: 10%;
+  }
+  90% {
+    top: 10%;
+  }
+  99% {
+    top: 10%;
+  }
+  100% {
+    top: -10%;
+  }
+}
