@@ -14,11 +14,13 @@ class Users(db.Model):
     name = db.Column(db.String(50))
     email = db.Column(db.String(100))
     task = db.Column(db.String(10000))
+    history = db.Column(db.String(10000000))
 
-    def __init__(self, name, email, task):
+    def __init__(self, name, email, task, history):
         self.name = name
         self.email = email
         self.task = task
+        self.history = history
 
 @app.route("/")
 def get_in():
@@ -51,7 +53,7 @@ def verifySignup():
             flash("This email already exists")
             return redirect(url_for("sign_up"))
         else:
-            new_user = Users(name, email, task = "")
+            new_user = Users(name, email, task = "", history="")
             db.session.add(new_user)
             db.session.commit()
             flash("Signed In Successfully")
@@ -108,6 +110,7 @@ def add_task():
             user = Users.query.filter_by(name=session["name"], email=session["email"]).first()
             if user:
                 user.task = (user.task or "") + task + ","
+                user.history = user.task
             try:
                 db.session.commit()
                 print("Task Added Successfully to DataBase")

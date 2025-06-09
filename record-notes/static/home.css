@@ -37,7 +37,7 @@ nav {
   height: 5rem;
   width: 8rem;
   background-color: black;
-  border: 2px solid red;
+  border: 2px solid rgb(0, 255, 247);
   border-radius: 100%;
   position: absolute;
   top: -55%;
