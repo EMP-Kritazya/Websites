@@ -119,25 +119,15 @@ def add_task():
                 # return redirect(url_for("get_tasks"))
             except:
                 print("Issue in adding a task")
-                flash("There was an issue adding your task!")
                 print(jsonify(success=False, error = "Issue in adding your task!"))
                 return jsonify(success=False, error = "Issue in adding your task!")
             
         else:
-            flash("Your task cannot be empty!")
             print(jsonify(success=False, error = "Can't add blank task!"))
             return jsonify(success=False, error = "Can't add blank task!")
             # return redirect(url_for("get_tasks"))
 
     else:
-        # tasks = [t[0] for t in db.session.query(Users.task).filter_by(name = session["name"], email = session["email"]).all()]
-
-        # if len(tasks) == 0:
-        #     return render_template("record.html", tasks = "")
-        # else:
-        #     task_array = [task.strip() for task in tasks[0].split(",")]
-        #     return render_template("record.html", tasks = task_array)
-        # return render_template("record.html")
         pass
 
 @app.route("/get_tasks")
@@ -160,15 +150,11 @@ def delete(task):
 
         user.task = user.task.replace(task+',', "")
         db.session.commit()
-        print(user.task)
         print("Task Removed Successfully")
         return jsonify(success = True)
     else:
         return jsonify(success = False, error = "Task not found"), 404
     
-
-
-
 
 @app.route("/db")
 def database():
