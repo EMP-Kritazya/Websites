@@ -30,7 +30,7 @@ csslink %}
   <div id="datetime"></div>
   <div class="task-lists">{% include 'partials/task_list.html' %}</div>
   <div class="task-configure">
-    <form action="/record" method="POST">
+    <form method="POST" id="mainform">
       <input
         type="text"
         name="task"
@@ -58,41 +58,75 @@ csslink %}
 
   // Update every second
   // setInterval(updateDateTime, 1000);
-  window.onload = updateDateTime;
+  window.onload = function () {
+    updateDateTime();
+    refreshTasksLists();
+  };
 
-  function refreshTasks() {
-    fetch("/get_tasks")
-      .then((res) => res.text())
+  function refreshTasksLists() {
+    return fetch("/get_tasks", {
+      method: "GET",
+    })
+      .then((response) => response.text())
       .then((html) => {
-        document.querySelector(".tasks-lists").innerHTML = html;
-        bindCheckboxListeners(); // re-bind event listeners
+        document.querySelector(".task-lists").innerHTML = html;
+        bindCheckboxListeners();
+        console.log("Tasks refreshed");
+      })
+      .catch((err) => {
+        console.error("Error refreshing tasks:", err);
       });
   }
 
-  document.querySelectorAll(".checkbox").forEach((checkbox) => {
-    checkbox.addEventListener("change", function () {
-      const taskDiv = this.closest(".task-area");
-      const content = taskDiv.querySelector(".task").textContent.trim();
-      if (this.checked) {
-        taskDiv.classList.add("remove");
-        fetch("/delete/" + encodeURIComponent(content))
-          .then((response) => response.json())
-          .then((data) => {
-            if (data.success) {
-              taskDiv.addEventListener(
-                "animationend",
-                () => {
-                  taskDiv.style.display = "none";
-                  refreshTasks();
-                },
-                { once: true }
-              ); // ensures it only runs once
-            } else {
-              console.error(data.error);
-            }
-          });
-      }
-    });
+  document.getElementById("mainform").addEventListener("submit", function (e) {
+    e.preventDefault();
+    const formData = new FormData(this);
+
+    fetch("/add_task", {
+      method: "POST",
+      body: formData,
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.success) {
+          refreshTasksLists();
+          this.reset();
+        } else {
+          alert(data.error);
+        }
+      })
+      .catch((err) => {
+        console.error("Error submitting form:", err);
+      });
   });
+
+  function bindCheckboxListeners() {
+    document.querySelectorAll(".checkbox").forEach((checkbox) => {
+      checkbox.addEventListener("change", function () {
+        console.log("CHECKBOX CLICKED");
+        const taskDiv = this.closest(".task-area");
+        const content = taskDiv.querySelector(".task").textContent.trim();
+        if (this.checked) {
+          taskDiv.classList.add("remove");
+          fetch("/delete/" + encodeURIComponent(content))
+            .then((response) => response.json())
+            .then((data) => {
+              if (data.success) {
+                taskDiv.addEventListener(
+                  "animationend",
+                  () => {
+                    taskDiv.style.display = "none";
+                    refreshTasksLists();
+                  },
+                  { once: true }
+                ); // ensures it only runs once
+              } else {
+                console.error(data.error);
+              }
+            });
+        }
+      });
+    });
+  }
 </script>
 {% endblock %}

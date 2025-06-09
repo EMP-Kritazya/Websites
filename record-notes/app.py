@@ -94,10 +94,15 @@ def home():
     else:
         return redirect(url_for("get_in"))
     
-@app.route("/record", methods = ["POST", "GET"])
+@app.route("/record")
 def record():
+    return render_template("record.html")
+    
+@app.route("/add_task", methods = ["POST", "GET"])
+def add_task():
     if request.method == "POST":
         task = request.form["task"]
+        print(task)
         if len(task)>0:
             #adding task:
             user = Users.query.filter_by(name=session["name"], email=session["email"]).first()
@@ -106,13 +111,20 @@ def record():
             try:
                 db.session.commit()
                 print("Task Added Successfully to DataBase")
-                return redirect(url_for("get_tasks"))
+                print(jsonify(success = True))
+                return jsonify(success=True)
+                # return redirect(url_for("get_tasks"))
             except:
                 print("Issue in adding a task")
                 flash("There was an issue adding your task!")
+                print(jsonify(success=False, error = "Issue in adding your task!"))
+                return jsonify(success=False, error = "Issue in adding your task!")
+            
         else:
             flash("Your task cannot be empty!")
-            return redirect(url_for("get_tasks"))
+            print(jsonify(success=False, error = "Can't add blank task!"))
+            return jsonify(success=False, error = "Can't add blank task!")
+            # return redirect(url_for("get_tasks"))
 
     else:
         # tasks = [t[0] for t in db.session.query(Users.task).filter_by(name = session["name"], email = session["email"]).all()]
@@ -122,16 +134,17 @@ def record():
         # else:
         #     task_array = [task.strip() for task in tasks[0].split(",")]
         #     return render_template("record.html", tasks = task_array)
-        return render_template("record.html")
+        # return render_template("record.html")
+        pass
 
 @app.route("/get_tasks")
 def get_tasks():
     tasks = [t[0] for t in db.session.query(Users.task).filter_by(name = session["name"], email = session["email"]).all()]
     if len(tasks) == 0:
-        return render_template("templates/partials/task_list.html", tasks = "")
+        return render_template("partials/task_list.html", tasks = "")
     else:
         task_array = [task.strip() for task in tasks[0].split(",")]
-        return render_template("templates/partials/task_list.html", tasks = task_array)
+        return render_template("partials/task_list.html", tasks = task_array)
     
 @app.route('/delete/<task>')
 def delete(task):

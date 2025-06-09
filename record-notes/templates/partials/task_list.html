@@ -1,12 +1,12 @@
 <div class="overlay"></div>
 <div class="task-title">Today's Tasks</div>
 <div class="task-status">
-  {% for task in tasks %} {% if not task %}
+  {% for task in tasks %} {% if task == "" %}
   <p class="no-task">All cleared for today!</p>
   {% else %}
   <div class="task-area">
     <p class="task">{{task}}</p>
-    <div class="checkbox">
+    <div class="checkbox-container">
       <input type="checkbox" class="checkbox" />
     </div>
   </div>
