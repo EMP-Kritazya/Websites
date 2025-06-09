@@ -1,4 +1,98 @@
 {% extends "base.html" %} {% block title %} Record {% endblock %} {% block
 csslink %}
 <link rel="stylesheet" href="{{url_for('static', filename = 'record.css')}}" />
-{% block contents %} {% endblock %}
+{% endblock %} {% block contents %} {% with messages = get_flashed_messages() %}
+{% if messages %} {% for msg in messages %}
+<p class="flash">{{msg}}</p>
+{% endfor %} {% endif %} {% endwith %}
+
+<header>
+  <nav>
+    <div class="box"></div>
+    <div class="logo">
+      <h1>recordIT</h1>
+    </div>
+    <ul class="nav-ul">
+      <li class="nav-tool">
+        <a href="/home" class="nav-link">Home</a>
+      </li>
+      <li class="nav-tool">
+        <a href="/record" class="nav-link">Record</a>
+      </li>
+      <li class="nav-tool-end">
+        <a href="/logout" class="nav-link">Logout</a>
+      </li>
+    </ul>
+  </nav>
+</header>
+
+<main>
+  <div id="datetime"></div>
+  <div class="task-lists">{% include 'partials/task_list.html' %}</div>
+  <div class="task-configure">
+    <form action="/record" method="POST">
+      <input
+        type="text"
+        name="task"
+        placeholder="Enter your task"
+        class="name"
+      />
+      <input type="submit" class="submit" />
+    </form>
+  </div>
+</main>
+
+<script>
+  function updateDateTime() {
+    const now = new Date();
+    const options = {
+      weekday: "long",
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    };
+    const dateStr = now.toLocaleDateString(undefined, options);
+
+    document.getElementById("datetime").innerHTML = `${dateStr}`;
+  }
+
+  // Update every second
+  // setInterval(updateDateTime, 1000);
+  window.onload = updateDateTime;
+
+  function refreshTasks() {
+    fetch("/get_tasks")
+      .then((res) => res.text())
+      .then((html) => {
+        document.querySelector(".tasks-lists").innerHTML = html;
+        bindCheckboxListeners(); // re-bind event listeners
+      });
+  }
+
+  document.querySelectorAll(".checkbox").forEach((checkbox) => {
+    checkbox.addEventListener("change", function () {
+      const taskDiv = this.closest(".task-area");
+      const content = taskDiv.querySelector(".task").textContent.trim();
+      if (this.checked) {
+        taskDiv.classList.add("remove");
+        fetch("/delete/" + encodeURIComponent(content))
+          .then((response) => response.json())
+          .then((data) => {
+            if (data.success) {
+              taskDiv.addEventListener(
+                "animationend",
+                () => {
+                  taskDiv.style.display = "none";
+                  refreshTasks();
+                },
+                { once: true }
+              ); // ensures it only runs once
+            } else {
+              console.error(data.error);
+            }
+          });
+      }
+    });
+  });
+</script>
+{% endblock %}

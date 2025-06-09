@@ -1,5 +1,6 @@
-from flask import Flask, render_template, request, redirect, url_for, flash, session
+from flask import Flask, render_template, request, redirect, url_for, flash, session, jsonify
 from flask_sqlalchemy import SQLAlchemy
+from datetime import datetime
 
 app = Flask(__name__)
 app.secret_key = "kIhas@1jnmas}a}[asd]!!|aq1h28856565562"
@@ -12,15 +13,12 @@ class Users(db.Model):
     _id = db.Column("id", db.Integer, primary_key = True)
     name = db.Column(db.String(50))
     email = db.Column(db.String(100))
-    thing1 = db.Column(db.String(10000))
-    thing2 = db.Column(db.String(10000))
-    thing3 = db.Column(db.String(10000))
-    thing4 = db.Column(db.String(10000))
-    thing5 = db.Column(db.String(10000))
+    task = db.Column(db.String(10000))
 
-    def __init__(self, name, email):
+    def __init__(self, name, email, task):
         self.name = name
         self.email = email
+        self.task = task
 
 @app.route("/")
 def get_in():
@@ -53,7 +51,7 @@ def verifySignup():
             flash("This email already exists")
             return redirect(url_for("sign_up"))
         else:
-            new_user = Users(name, email)
+            new_user = Users(name, email, task = "")
             db.session.add(new_user)
             db.session.commit()
             flash("Signed In Successfully")
@@ -95,6 +93,64 @@ def home():
         return render_template("home.html")
     else:
         return redirect(url_for("get_in"))
+    
+@app.route("/record", methods = ["POST", "GET"])
+def record():
+    if request.method == "POST":
+        task = request.form["task"]
+        if len(task)>0:
+            #adding task:
+            user = Users.query.filter_by(name=session["name"], email=session["email"]).first()
+            if user:
+                user.task = (user.task or "") + task + ","
+            try:
+                db.session.commit()
+                print("Task Added Successfully to DataBase")
+                return redirect(url_for("get_tasks"))
+            except:
+                print("Issue in adding a task")
+                flash("There was an issue adding your task!")
+        else:
+            flash("Your task cannot be empty!")
+            return redirect(url_for("get_tasks"))
+
+    else:
+        # tasks = [t[0] for t in db.session.query(Users.task).filter_by(name = session["name"], email = session["email"]).all()]
+
+        # if len(tasks) == 0:
+        #     return render_template("record.html", tasks = "")
+        # else:
+        #     task_array = [task.strip() for task in tasks[0].split(",")]
+        #     return render_template("record.html", tasks = task_array)
+        return render_template("record.html")
+
+@app.route("/get_tasks")
+def get_tasks():
+    tasks = [t[0] for t in db.session.query(Users.task).filter_by(name = session["name"], email = session["email"]).all()]
+    if len(tasks) == 0:
+        return render_template("templates/partials/task_list.html", tasks = "")
+    else:
+        task_array = [task.strip() for task in tasks[0].split(",")]
+        return render_template("templates/partials/task_list.html", tasks = task_array)
+    
+@app.route('/delete/<task>')
+def delete(task):
+    print(task)
+    user = Users.query.filter_by(name=session["name"], email=session["email"]).first()
+    if user:
+        print(user.task)
+
+        user.task = user.task.replace(task+',', "")
+        db.session.commit()
+        print(user.task)
+        print("Task Removed Successfully")
+        return jsonify(success = True)
+    else:
+        return jsonify(success = False, error = "Task not found"), 404
+    
+
+
+
 
 @app.route("/db")
 def database():

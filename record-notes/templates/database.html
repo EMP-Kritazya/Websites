@@ -1,6 +1,9 @@
 {% extends "base.html" %} {% block title %} DATABASE {% endblock %} {% block
 contents %} {% for user in values %}
-<p>Name: {{user.name}}, &nbsp;&nbsp;&nbsp;&nbsp;Email: {{user.email}}</p>
+<p>
+  Name: {{user.name}}, &nbsp;&nbsp;&nbsp;&nbsp;Email: {{user.email}},
+  &nbsp;&nbsp;&nbsp;&nbsp;Task: {{user.task}}
+</p>
 <br />
 <hr />
 {% endfor %} {%endblock%}

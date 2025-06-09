@@ -1,0 +1,14 @@
+<div class="overlay"></div>
+<div class="task-title">Today's Tasks</div>
+<div class="task-status">
+  {% for task in tasks %} {% if not task %}
+  <p class="no-task">All cleared for today!</p>
+  {% else %}
+  <div class="task-area">
+    <p class="task">{{task}}</p>
+    <div class="checkbox">
+      <input type="checkbox" class="checkbox" />
+    </div>
+  </div>
+  {% endif %}{% endfor %}
+</div>

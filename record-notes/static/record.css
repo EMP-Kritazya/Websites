@@ -1,0 +1,252 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+
+* {
+  margin: 0px;
+  padding: 0px;
+  color: white;
+  font-family: "Poppins", "sans-serif";
+  font-style: normal;
+  font-weight: 100;
+  box-sizing: border-box;
+}
+
+body {
+  min-height: 100vh;
+  background: linear-gradient(
+    135deg,
+    rgb(0, 0, 0) 0%,
+    rgb(34, 31, 31) 80%,
+    rgb(92, 17, 17) 85%,
+    rgb(123, 9, 9) 100%
+  );
+  background-repeat: no-repeat;
+}
+
+header {
+  height: 10vh;
+}
+
+nav {
+  display: flex;
+  justify-content: space-between;
+  margin: 3rem 10rem;
+  position: relative;
+}
+
+.box {
+  height: 5rem;
+  width: 8rem;
+  background-color: black;
+  border: 2px solid red;
+  border-radius: 100%;
+  position: absolute;
+  top: -55%;
+  left: -1%;
+  z-index: -1;
+}
+
+.nav-ul {
+  list-style: none;
+  display: flex;
+  justify-content: space-between;
+  /* background-color: rgb(89, 93, 93); */
+  /* border-radius: 20%; */
+}
+
+.nav-tool {
+  margin: 0rem 7rem;
+}
+
+.nav-tool-end {
+  margin: 0rem 3rem;
+}
+
+.nav-link {
+  text-decoration: none;
+  font-weight: 400;
+  font-size: 1.5rem;
+  transition: transform 0.5s ease-in-out, color 0.5s ease-in-out;
+  display: inline-block;
+}
+
+.nav-link:hover {
+  color: aquamarine;
+}
+
+main {
+  padding: 2rem;
+  width: 100%;
+  height: 60vh;
+}
+
+.task-lists {
+  margin: auto;
+  width: 40vw;
+  background-color: rgb(19, 19, 22);
+  min-height: 25rem;
+  border-radius: 10px;
+  padding: 1rem;
+  box-shadow: 10px 10px 10px white;
+  transition: box-shadow 0.5s ease-in-out;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  background-image: url("/static/trophy.jpg");
+  z-index: 1;
+  overflow: hidden;
+}
+
+.task-lists:hover {
+  box-shadow: 10px 10px 20px white;
+}
+
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.4); /* adjust alpha for dimness */
+  z-index: 0;
+}
+
+#datetime {
+  font-size: 2rem;
+  text-align: center;
+  margin: 2rem 0rem 3rem 0rem;
+}
+
+.back-image {
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  border-radius: 10px;
+  transform: scaleX(-1);
+  z-index: -1;
+}
+
+.flash {
+  position: absolute;
+  top: 10%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 1.2rem;
+  background-color: rgb(76, 204, 76);
+  padding: 1.5rem;
+  border-radius: 5px;
+  font-weight: 900;
+  font-size: 1.4rem;
+  animation: translate 5s ease-in-out forwards;
+}
+
+@keyframes translate {
+  0% {
+    top: 0%;
+  }
+  50% {
+    top: 10%;
+  }
+  70% {
+    top: 10%;
+  }
+  90% {
+    top: 10%;
+  }
+  99% {
+    top: 10%;
+  }
+  100% {
+    top: -10%;
+  }
+}
+.task-title {
+  text-align: left;
+  font-size: 1.5rem;
+  font-weight: 500;
+  color: rgb(255, 0, 0);
+  height: 20%;
+  z-index: 2;
+}
+
+.task-status {
+  flex-grow: 1;
+  z-index: 2;
+  /* display: flex; */
+  /* justify-content: center; */
+}
+
+.no-task {
+  font-size: 2.5rem;
+  font-weight: 900;
+  color: rgb(0, 255, 13);
+  letter-spacing: 1.5px;
+  font-family: "Times New Roman", Times, serif;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: auto;
+  white-space: nowrap;
+}
+
+.task-area {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  border: 2px solid rgb(255, 0, 255);
+  height: auto;
+  width: 80%;
+  margin: 2rem 0rem;
+  padding: 0.5rem 1rem;
+  background-color: black;
+  border-radius: 10px;
+}
+
+.task {
+  display: block;
+  font-family: "Times New Roman", Times, serif;
+  font-size: 1.2rem;
+}
+
+.name {
+  background-color: black;
+  border: 1px solid white;
+  color: white;
+  padding: 0.5rem;
+  font-size: 1.1rem;
+}
+
+.name:focus {
+  border-color: #007bff;
+  outline: none;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+.remove {
+  animation: removing 1s cubic-bezier(0.97, 0.53, 0.49, 1.51) forwards;
+}
+
+@keyframes removing {
+  10% {
+    opacity: 0.9;
+  }
+  20% {
+    opacity: 0.7;
+  }
+  30% {
+    opacity: 0.5;
+  }
+  40% {
+    opacity: 0.3;
+  }
+  50% {
+    opacity: 0.1;
+  }
+  100% {
+    transform: translateX(-50vw);
+    opacity: 0;
+  }
+}
