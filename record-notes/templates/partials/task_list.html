@@ -1,14 +1,14 @@
 <div class="overlay"></div>
 <div class="task-title">Today's Tasks</div>
 <div class="task-status">
-  {% for task in tasks %} {% if task == "" %}
+  {% if tasks|reject("equalto", "")|list|length == 0 %}
   <p class="no-task">All cleared for today!</p>
-  {% else %}
+  {% else %} {% for task in tasks %} {% if task != "" %}
   <div class="task-area">
-    <p class="task">{{task}}</p>
+    <p class="task">{{ task }}</p>
     <div class="checkbox-container">
       <input type="checkbox" class="checkbox" />
     </div>
   </div>
-  {% endif %}{% endfor %}
+  {% endif %} {% endfor %} {% endif %}
 </div>

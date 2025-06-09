@@ -69,6 +69,7 @@ csslink %}
     })
       .then((response) => response.text())
       .then((html) => {
+        console.log(html);
         document.querySelector(".task-lists").innerHTML = html;
         bindCheckboxListeners();
         console.log("Tasks refreshed");
@@ -103,7 +104,6 @@ csslink %}
   function bindCheckboxListeners() {
     document.querySelectorAll(".checkbox").forEach((checkbox) => {
       checkbox.addEventListener("change", function () {
-        console.log("CHECKBOX CLICKED");
         const taskDiv = this.closest(".task-area");
         const content = taskDiv.querySelector(".task").textContent.trim();
         if (this.checked) {
@@ -116,7 +116,6 @@ csslink %}
                   "animationend",
                   () => {
                     taskDiv.style.display = "none";
-                    refreshTasksLists();
                   },
                   { once: true }
                 ); // ensures it only runs once
