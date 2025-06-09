@@ -1,0 +1,24 @@
+# Ignore SQLite database files
+instance/
+
+instance/*.sqlite3
+
+# Ignore virtual environments
+.venv/
+env/
+ENV/
+
+# Ignore Python cache files
+__pycache__/
+*.py[cod]
+
+# Ignore Flask instance folder
+instance/
+
+# Ignore IDE/editor settings
+.vscode/
+.idea/
+
+# Ignore macOS system files
+.DS_Store
+
